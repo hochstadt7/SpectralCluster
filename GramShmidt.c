@@ -18,10 +18,11 @@ double ***modifeied_gram_shmidt(double **A,int n){
     for(i=0; i<n; i++){
         set_col(U,curr_column,i,n);
         R[i][i]=get_norm(curr_column,n);
-        set_col(Q,sec_column,i,n);
+
         for(j=0;j<n;j++){
             sec_column[j]=curr_column[j]/R[i][i];
         }
+        set_col(Q,sec_column,i,n);
         for(j=i+1; j<n;j++){
             set_col(Q,curr_column,i,n);
             set_col(U,sec_column,j,n);

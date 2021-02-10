@@ -2,6 +2,7 @@
 #include "C:\Users\LENOVO\AppData\Local\Programs\Python\Python38\include\Python.h"
 #include "Qr.h"
 #include "ShmidtAux.h"
+#include "EigengapHeuristic.h"
 
 static void err_message(char *err){
     printf("%s",err);
@@ -35,14 +36,15 @@ static PyObject* calc_eigen_values_vectors(PyObject *self, PyObject *args){//arg
     PyObject *data_python;
     double ***ret;
     double **data;
-    int n;
+    int n,num_of_vectors;
     if(!PyArg_ParseTuple(args, "Oi", &data_python, &n) || self == NULL)
         return NULL;
     data=my_alloc(n,n);
     convert_float_double(data,data_python);
     ret=qr_iter(data,n);
     free_arrays(data,n);
-    return Py_BuildValue("O", ret);
+    num_of_vectors=get_eigen_gap(ret[1],n);
+    return Py_BuildValue("Oii", ret[1],n,num_of_vectors); //return eigenvectors and number of them to be taken to the next step
 }
 
     static PyMethodDef eigenMethods[]={
