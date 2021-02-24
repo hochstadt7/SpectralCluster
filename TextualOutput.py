@@ -22,15 +22,24 @@ def cluster_txt(normalized_cluster,k_means_cluster):
         f.write(",".join([str(k_means_cluster[j]) for j in range(num_of_clusters)])+"\n")
     f.close()
 
-# x,y are the parameters returned from make_blobs()
-def visualziation_output(x,y):
+# x,y are the parameters returned from make_blobs(), dimension is either 2 or 3
+def visualziation_output(X,y,dimension,jaccard):
 
     with PdfPages('clusters.pdf') as pdf:
-
-        fig, (ax1, ax2) = plt.subplots(1, 2)
-        ax1.plot(x, y)
-        ax1.set_title('Normalized Spectral Clustering')
-        ax2.plot(x, -y)
-        ax2.set_title('K-means')
-        plt.figtext(0.5, 0.01, "Data was generated from the values:\nn={}, k={}\nThe k that used for both algoritms was {}\nThe jaccard measure for Spectral Clustering: {}\n The jaccard measure for K-means: {}", ha="center", fontsize=10, bbox={"facecolor":"orange", "alpha":0.5, "pad":5})
+        fig=plt.figure()
+        if dimension==2:
+            ax=fig.add_subplot(2,2,1)
+            ax.scatter(X[:,0],X[:,1],c=y)
+            ax.set_title('Normal Spectral Clustering')
+            ax = fig.add_subplot(2, 2, 2)
+            ax.scatter(X[:,0],X[:,1],c=y)
+            ax.set_title('K-means')
+        else:
+            ax=fig.add_subplot(2,2,1,projection='3d')
+            ax.scatter(X[:,0],X[:,1],X[:,2],c=y)
+            ax.set_title('Normal Spectral Clustering')
+            ax = fig.add_subplot(2, 2, 2,projection='3d')
+            ax.scatter(X[:,0],X[:,1],X[:,2],c=y)
+            ax.set_title('K-means')
+        plt.figtext(0.5, 0.01, "Data was generated from the values:\nn="+str(len(X))+", k="+str(dimension)+"\nThe k that used for both algoritms was "+str(dimension)+"\nThe jaccard measure for Spectral Clustering: "+str(jaccard)+"\n The jaccard measure for K-means: "+str(jaccard), ha="center", fontsize=10, bbox={"facecolor":"orange", "alpha":0.5, "pad":5})
         pdf.savefig()
