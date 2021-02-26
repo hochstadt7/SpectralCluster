@@ -28,7 +28,7 @@ setup(
             # the files to compile into our module relative to ``setup.py``
             # see how we handle the include - it is important that the geo.h
             # is in the root, otherwise we would have to use: include_dirs=['...']
-            ['MatrixCPython.c', 'Qr.c','ShmidtAux.c','GramShmidt.c'],
+            ['EigenValsCPython.c','EigengapHeuristic.c', 'Qr.c','ShmidtAux.c','GramShmidt.c'],
             # for example, geo.h is in a folder named myheaders:
             # include_dirs=['myheaders']
         ),

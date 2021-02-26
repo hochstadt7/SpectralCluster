@@ -51,7 +51,7 @@ void copy_arrays(double **copy,double **paste,int n){
     }
 }
 
-double free_arrays(double **U,int n){
+void free_arrays(double **U,int n){
     int i;
     for(i=0;i<n;i++){
         free(U[i]);
@@ -59,7 +59,7 @@ double free_arrays(double **U,int n){
     free(U);
 }
 
-double mult_matrices(double **first,double **second,double** res,int n){
+void mult_matrices(double **first,double **second,double** res,int n){
     int i,j,k;
     for(i=0;i<n;i++){
         for(j=0;j<n;j++){
