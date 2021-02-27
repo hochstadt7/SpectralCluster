@@ -1,30 +1,18 @@
 import numpy as np
-import GramShmidt
+import GramSchmidt
 
-def epsilon_diff(first,second,n):
+epsilon = 0.0001
+
+
+def qr_iter(a, n):
+    q_ort = np.eye(n)
+    a_diag = a.copy()
     for i in range(n):
-        for j in range(n):
-            if abs(first[i,j]-second[i,j])>0.01:
-                return True
-    return False
-
-def qr_iter(A,n):
-
-    Q_tag=np.eye(n)
-    A_tag=A.copy()
-    ret=[None,None]
-    for i in range(n):
-        obtain_q_r = GramShmidt.modified_gram_shmidt(Q_tag, n)# not sure what is the parameter passed to gram_shmidt
-        Q=obtain_q_r[0].copy()
-        R=obtain_q_r[1].copy()
-        A_tag=np.matmul(R,Q)
-        update = np.matmul(Q_tag, Q)
-        if not epsilon_diff(Q_tag,update,n):
-            ret[0]=A_tag
-            ret[1]=Q_tag
-            return ret
-        Q_tag=update.copy()
-    ret[0] = A_tag
-    ret[1] = Q_tag
-    return ret
-
+        # TODO: replace with our GS implementation
+        q, r = GramSchmidt.modified_gram_schmidt_np(a_diag)
+        a_diag = np.matmul(r, q)
+        new_q = np.matmul(q, q_ort)
+        if np.max(np.abs(np.abs(new_q) - np.abs(q_ort))) < epsilon:
+            return a_diag, new_q
+        q_ort = new_q.copy()
+    return q_ort, a_diag
