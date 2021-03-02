@@ -13,6 +13,6 @@ def qr_iter(a, n):
         a_diag = np.matmul(r, q)
         new_q = np.matmul(q, q_ort)
         if np.max(np.abs(np.abs(new_q) - np.abs(q_ort))) < epsilon:
-            return a_diag, new_q
+            return new_q, a_diag
         q_ort = new_q.copy()
     return q_ort, a_diag
