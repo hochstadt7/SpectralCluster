@@ -17,7 +17,6 @@ parser.add_argument("Random", type=bool)
 args = parser.parse_args()
 k = int(args.k)
 n = int(args.n)
-
 d = 2
 
 data = DataGen.generate_data(n, d, k)
@@ -30,7 +29,7 @@ fig, ax = plt.subplots()
 for i in range(k):
     points = np.array([data[j] for j in range(len(data)) if clusters.labels_[j] == i])
     ax.scatter(points[:, 0], points[:, 1], s=7, c=colors[i])
-plt.savefig('line_plot2.pdf')
+plt.savefig('plot_kmeans.pdf')
 
 
 weights = GraphGen.get_weight_matrix(n, data)
@@ -38,7 +37,6 @@ diagonal = GraphGen.get_diagonal_degree_matrix(n, weights)
 laplacian = GraphGen.get_laplacian_matrix(n, diagonal, weights)
 e_vectors, e_values_diag = qr_iter(laplacian, n)
 e_values = np.diagonal(e_values_diag)
-# e_values, e_vectors = np.linalg.eig(laplacian)
 k, vectors = eigen_gap_heuristic(e_vectors, e_values, n)
 clusters = KMeans(n_clusters=k).fit(vectors.tolist())
 print(clusters.labels_)
@@ -47,5 +45,5 @@ fig, ax = plt.subplots()
 for i in range(k):
     points = np.array([data[j] for j in range(len(data)) if clusters.labels_[j] == i])
     ax.scatter(points[:, 0], points[:, 1], s=7, c=colors[i])
-plt.savefig('line_plot.pdf')
+plt.savefig('plot_spectral.pdf')
 
