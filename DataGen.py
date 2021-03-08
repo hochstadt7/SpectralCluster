@@ -28,13 +28,11 @@ def generate_concentric_circles_data(param_list):
     return coordinates
 
 
-def generate_circles():
-    # Number of points per circle.
-    n = 100
+def generate_circles(n, rings):
     # Radius.
-    r_list = [2, 10]
+    r_list = [2 + 4*i for i in range(rings)]
     # Standard deviation (Gaussian noise).
-    sigmas = [0.2]
+    sigmas = [0]
 
     param_lists = [[(r, n, sigma) for r in r_list] for sigma in sigmas]
     # We store the data on this list.
