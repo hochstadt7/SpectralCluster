@@ -31,7 +31,7 @@ static void convert_float_double(double**data, PyObject *data_python) {
     }
 }
 
-static PyObject* calc_eigen_values_vectors(PyObject *self, PyObject *args){//args: 2 dimension array, dimension
+static PyObject* calc_eigen_values_vectors(PyObject *self, PyObject *args){
 
     PyObject *data_python;
     double ***ret;
@@ -43,8 +43,8 @@ static PyObject* calc_eigen_values_vectors(PyObject *self, PyObject *args){//arg
     convert_float_double(data,data_python);
     ret=qr_iter(data,n);
     free_arrays(data,n);
-    num_of_vectors=get_eigen_gap(ret[1],n);
-    return Py_BuildValue("Oii", ret[1],n,num_of_vectors); //return eigenvectors and number of them to be taken to the next step
+    //num_of_vectors=get_eigen_gap(ret[1],n);
+    return Py_BuildValue("O",ret);
 }
 
     static PyMethodDef eigenMethods[]={
@@ -54,11 +54,11 @@ static PyObject* calc_eigen_values_vectors(PyObject *self, PyObject *args){//arg
 };
 
 static struct PyModuleDef moduledef={
-        PyModuleDef_HEAD_INIT,"section4",NULL,-1,eigenMethods
+        PyModuleDef_HEAD_INIT,"section_four",NULL,-1,eigenMethods
 };
 
 PyMODINIT_FUNC
-PyInit_section4(void){
+PyInit_section_four(void){
     PyObject *m;
     m = PyModule_Create(&moduledef);
     if (!m) {

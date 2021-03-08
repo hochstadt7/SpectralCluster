@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages, Extension
 
 setup(
-    name='section4',
+    name='section_four',
     version='0.1.0',
     install_requires=['invoke'],
     packages=find_packages(),  # find_packages(where='.', exclude=())
@@ -24,11 +24,11 @@ setup(
     ext_modules=[
         Extension(
             # the qualified name of the extension module to build
-            'section4',
+            'section_four',
             # the files to compile into our module relative to ``setup.py``
             # see how we handle the include - it is important that the geo.h
             # is in the root, otherwise we would have to use: include_dirs=['...']
-            ['EigenValsCPython.c','EigengapHeuristic.c', 'Qr.c','ShmidtAux.c','GramShmidt.c'],
+            ['EigenValsCPython.c', 'Qr.c','ShmidtAux.c','GramShmidt.c'],
             # for example, geo.h is in a folder named myheaders:
             # include_dirs=['myheaders']
         ),

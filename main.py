@@ -4,10 +4,12 @@ from sklearn.cluster import KMeans
 import argparse
 
 from GramSchmidt import *
-from KMeans import *
+#from KMeans import *
+import section_four as sec_four
 from Qr import *
 from EigenGapSelection import *
 from matplotlib import pyplot as plt
+
 
 
 parser = argparse.ArgumentParser()
@@ -35,9 +37,12 @@ plt.savefig('plot_kmeans.pdf')
 weights = GraphGen.get_weight_matrix(n, data)
 diagonal = GraphGen.get_diagonal_degree_matrix(n, weights)
 laplacian = GraphGen.get_laplacian_matrix(n, diagonal, weights)
-e_vectors, e_values_diag = qr_iter(laplacian, n)
-e_values = np.diagonal(e_values_diag)
-k, vectors = eigen_gap_heuristic(e_vectors, e_values, n)
+
+ret=sec_four.calc_eigen_values_vectors(laplacian,n)
+
+#e_vectors, e_values_diag = qr_iter(laplacian, n)
+e_values = np.diagonal(ret[1])
+k, vectors = eigen_gap_heuristic(ret[0], e_values, n)
 clusters = KMeans(n_clusters=k).fit(vectors.tolist())
 print(clusters.labels_)
 colors = ['r', 'g', 'b', 'y', 'c', 'm']

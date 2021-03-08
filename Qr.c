@@ -43,7 +43,7 @@ double ***qr_iter(double** A,int n){
     copy_arrays(A_tag,A,n);
 
     for(i=0;i<n;i++){
-        obtain_q_r=modifeied_gram_shmidt(Q_tag,n); //not sure what is the parameter passed to gram_shmidt
+        obtain_q_r=modifeied_gram_shmidt(A_tag,n);
         copy_arrays(Q,obtain_q_r[0],n);copy_arrays(R,obtain_q_r[1],n);
         mult_matrices(R,Q,A_tag,n);
         mult_matrices(Q_tag,Q,update,n);

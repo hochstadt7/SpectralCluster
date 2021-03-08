@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <math.h>
+#include <assert.h>
 double **my_alloc(int first_layer, int second_layer){
     int counter;
     double **ret=(double **)malloc(first_layer*sizeof(double *));
@@ -29,7 +30,7 @@ double get_norm(double* col,int n){
     for(i=0;i<n;i++){
         ret_sum+=(col[i]*col[i]);
     }
-    return ret_sum;
+    return sqrt(ret_sum);
 }
 
 /*multiply vectors*/

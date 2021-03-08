@@ -6,4 +6,4 @@ def clean(c):
 
 @task
 def run(c):
-    c.run("python3.8.5 setup.py build_ext --inplace")
+    c.run("python3.8 setupmatrix.py build_ext --inplace")
