@@ -35,7 +35,8 @@ weights = GraphGen.get_weight_matrix(n, data)
 diagonal = GraphGen.get_diagonal_degree_matrix(n, weights)
 laplacian = GraphGen.get_laplacian_matrix(n, diagonal, weights)
 
-ret=foury.calc_eigen_values_vectors(laplacian,n)
+ret=foury.calc_eigen_values_vectors(laplacian.tolist(),n)
+print('woowwow')
 
 #e_vectors, e_values_diag = qr_iter(laplacian, n)
 e_values = np.diagonal(ret[1])
@@ -63,3 +64,4 @@ plt.savefig('plot_spectral.pdf')
 #     points = np.array([vectors[j] for j in range(len(vectors)) if clusters.labels_[j] == i])
 #     ax.scatter(points[:, 1], points[:, 2], s=7, c=colors[i])
 # plt.savefig('plot_spectral3.pdf')
+

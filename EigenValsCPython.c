@@ -25,6 +25,7 @@ static void convert_float_double(double**data, PyObject *data_python) {
             data[counter_n][counter_d] = PyFloat_AsDouble(PyList_GetItem(sublist, counter_d));
         }
     }
+
     if (PyErr_Occurred()) {
         PyErr_Print();
         err_message("Failed to convert float to double\n");
@@ -36,14 +37,24 @@ static PyObject* calc_eigen_values_vectors(PyObject *self, PyObject *args){
     PyObject *data_python;
     double ***ret;
     double **data;
-    int n;
+    int n,i,j;
     if(!PyArg_ParseTuple(args, "Oi", &data_python, &n) || self == NULL)
         return NULL;
+    if (!PyList_Check(data_python)) {
+        err_message("not a list\n");
+        return NULL;
+    }
     data=my_alloc(n,n);
+
+
     convert_float_double(data,data_python);
+
+
     ret=qr_iter(data,n);
     free_arrays(data,n);
     //num_of_vectors=get_eigen_gap(ret[1],n);
+
+
     return Py_BuildValue("O",ret);
 }
 
