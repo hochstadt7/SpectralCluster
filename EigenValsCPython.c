@@ -36,7 +36,7 @@ static PyObject* calc_eigen_values_vectors(PyObject *self, PyObject *args){
     PyObject *data_python;
     double ***ret;
     double **data;
-    int n,num_of_vectors;
+    int n;
     if(!PyArg_ParseTuple(args, "Oi", &data_python, &n) || self == NULL)
         return NULL;
     data=my_alloc(n,n);
@@ -47,20 +47,20 @@ static PyObject* calc_eigen_values_vectors(PyObject *self, PyObject *args){
     return Py_BuildValue("O",ret);
 }
 
-    static PyMethodDef eigenMethods[]={
-            {"calc_eigen_values_vectors",(PyCFunction) calc_eigen_values_vectors,
-             METH_VARARGS,PyDoc_STR("calculate eigen values and vectors")},
-            {NULL, NULL, 0, NULL}
+static PyMethodDef _eigenMethods[]={
+        {"calc_eigen_values_vectors",(PyCFunction) calc_eigen_values_vectors,
+                     METH_VARARGS,PyDoc_STR("calculate eigen values and vectors")},
+        {NULL, NULL, 0, NULL}
 };
 
-static struct PyModuleDef moduledef={
-        PyModuleDef_HEAD_INIT,"section_four",NULL,-1,eigenMethods
+static struct PyModuleDef _moduledef={
+        PyModuleDef_HEAD_INIT,"section_four",NULL,-1,_eigenMethods
 };
 
 PyMODINIT_FUNC
 PyInit_section_four(void){
     PyObject *m;
-    m = PyModule_Create(&moduledef);
+    m = PyModule_Create(&_moduledef);
     if (!m) {
         return NULL;
     }

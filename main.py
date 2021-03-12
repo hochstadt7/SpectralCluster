@@ -5,12 +5,10 @@ import argparse
 
 from GramSchmidt import *
 #from KMeans import *
-import section_four as sec_four
 from Qr import *
 from EigenGapSelection import *
 from matplotlib import pyplot as plt
-
-
+import section_four as foury
 
 parser = argparse.ArgumentParser()
 parser.add_argument("k", type=int)
@@ -22,7 +20,6 @@ n = int(args.n)
 d = 2
 
 data = DataGen.generate_data(n, d, k)
-
 
 clusters = KMeans(n_clusters=k).fit(data)
 print(clusters.labels_)
@@ -38,7 +35,7 @@ weights = GraphGen.get_weight_matrix(n, data)
 diagonal = GraphGen.get_diagonal_degree_matrix(n, weights)
 laplacian = GraphGen.get_laplacian_matrix(n, diagonal, weights)
 
-ret=sec_four.calc_eigen_values_vectors(laplacian,n)
+ret=foury.calc_eigen_values_vectors(laplacian,n)
 
 #e_vectors, e_values_diag = qr_iter(laplacian, n)
 e_values = np.diagonal(ret[1])

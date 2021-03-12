@@ -1,10 +1,10 @@
-#include <stdio.h>
+
 #include <stdlib.h>
 #include "GramShmidt.h"
 #include "ShmidtAux.h"
 #include <math.h>
 
-#define EPSILON 0.01
+#define EPSILON 0.0001
 
 /*identity matrix*/
 double** get_identity(int n){
@@ -15,6 +15,7 @@ double** get_identity(int n){
             res[i][j]=(i==j)?1:0;
         }
     }
+
     return res;
 }
 
@@ -34,7 +35,7 @@ int epsilon_diff(double **first,double **second,int n){
 double ***qr_iter(double** A,int n){
     double **A_tag,**Q_tag,**update,**Q,**R;
     double ***ret,***obtain_q_r;
-    int i,j;
+    int i,j,k;
     A_tag=my_alloc(n,n);
     update=my_alloc(n,n);
     Q_tag=get_identity(n);
@@ -42,10 +43,14 @@ double ***qr_iter(double** A,int n){
     ret=(double***)malloc(2*sizeof(double **));
     copy_arrays(A_tag,A,n);
 
+
     for(i=0;i<n;i++){
         obtain_q_r=modifeied_gram_shmidt(A_tag,n);
+
         copy_arrays(Q,obtain_q_r[0],n);copy_arrays(R,obtain_q_r[1],n);
+
         mult_matrices(R,Q,A_tag,n);
+
         mult_matrices(Q_tag,Q,update,n);
         if (!epsilon_diff(Q_tag,update,n)){
             ret[0]=A_tag;ret[1]=Q_tag;
@@ -62,12 +67,14 @@ double ***qr_iter(double** A,int n){
     }
     //need do not free if n=0 (possible?)
     ret[0]=A_tag;ret[1]=Q_tag;
-    for(i=0;i<2;i++){
-        free_arrays(obtain_q_r[i],n);
+
+    for (i = 0; i < 2; i++) {
+
+        free_arrays(obtain_q_r[i], n);
     }
     free(obtain_q_r);
+
     free_arrays(update,n);
     free_arrays(Q,n);free_arrays(R,n);
     return ret;
 }
-

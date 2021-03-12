@@ -34,11 +34,11 @@ double get_norm(double* col,int n){
 }
 
 /*multiply vectors*/
-double mult_vectors(double* first,double* second,int n){
+double mult_vectors(double** first,double** second,int n){
     double ret_sum=0;
     int i;
     for(i=0;i<n;i++){
-        ret_sum+=first[i]*second[i];
+        ret_sum+=((*first)[i])*((*second)[i]);
     }
     return ret_sum;
 }
