@@ -5,6 +5,6 @@
 #ifndef SPECTURALCLUSTER_GRAMSHMIDT_H
 #define SPECTURALCLUSTER_GRAMSHMIDT_H
 
-double ***modifeied_gram_shmidt(double **A,int n);
+void modifeied_gram_shmidt(double **A,int n,double*** obtain_q_r);
 
 #endif //UNTITLED_GRAMSHMIDT_H

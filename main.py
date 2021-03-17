@@ -7,8 +7,11 @@ from GramSchmidt import *
 #from KMeans import *
 from Qr import *
 from EigenGapSelection import *
+import numpy as np
 from matplotlib import pyplot as plt
 import section_four as foury
+import numpy as np
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("k", type=int)
@@ -34,12 +37,11 @@ plt.savefig('plot_kmeans.pdf')
 weights = GraphGen.get_weight_matrix(n, data)
 diagonal = GraphGen.get_diagonal_degree_matrix(n, weights)
 laplacian = GraphGen.get_laplacian_matrix(n, diagonal, weights)
-
 ret=foury.calc_eigen_values_vectors(laplacian.tolist(),n)
 print('woowwow')
 
 #e_vectors, e_values_diag = qr_iter(laplacian, n)
-e_values = np.diagonal(ret[1])
+e_values = np.diagonal(ret[1]) #need to convert back to numpy array before this row
 k, vectors = eigen_gap_heuristic(ret[0], e_values, n)
 clusters = KMeans(n_clusters=k).fit(vectors.tolist())
 print(clusters.labels_)
