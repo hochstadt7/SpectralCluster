@@ -12,5 +12,5 @@ def eigen_gap_heuristic(e_vectors, e_values, n):
     selected_e_vectors = e_vectors_sorted[0:k]
     eigen_matrix = np.transpose(selected_e_vectors)
     norm_eigen_matrix = np.apply_along_axis(lambda x: x / np.linalg.norm(x), 1, eigen_matrix)
-    print(k)
+    # print(k)
     return k, norm_eigen_matrix
