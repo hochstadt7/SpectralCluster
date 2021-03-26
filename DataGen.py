@@ -34,7 +34,7 @@ def generate_circles(n, rings):
     # Standard deviation (Gaussian noise).
     sigmas = [0]
 
-    param_lists = [[(r, n, sigma) for r in r_list] for sigma in sigmas]
+    param_lists = [[(r, int(n/rings), sigma) for r in r_list] for sigma in sigmas]
     # We store the data on this list.
     coordinates_list = [[], []]
     for i, param_list in enumerate(param_lists):
