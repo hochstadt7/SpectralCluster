@@ -27,13 +27,11 @@ int epsilon_diff(double **first, double **second, int n) {
         for (j = 0; j < n; j++) {
             pos_first = fabs(first[i][j]);
             pos_sec = fabs(second[i][j]);
-            //printf("-- %lf --",(pos_first-pos_sec));
             res = pos_first - pos_sec;
             if (res > EPSILON || res < (-EPSILON)) {
                 return 1;
             }
         }
-        printf("\n");
     }
     return 0;
 }
@@ -71,7 +69,7 @@ double ***qr_iter(double **A, int n) {
         mult_matrices(Q_tag, Q, updated_Q_tag, n);
         /* check epsilon difference */
         if (!epsilon_diff(Q_tag, updated_Q_tag, n)) {
-            printf("finish");
+
             ret[0] = A_tag;
             ret[1] = Q_tag;
             free_arrays(updated_Q_tag, n);
@@ -83,7 +81,7 @@ double ***qr_iter(double **A, int n) {
         /* set Q_tag to updated_Q_tag */
         copy_arrays(Q_tag, updated_Q_tag, n);
     }
-    /*printf("all iterations passed\n");*/
+
     ret[0] = A_tag;
     ret[1] = Q_tag;
     free(obtain_q_r);

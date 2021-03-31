@@ -21,7 +21,6 @@ void modified_gram_schmidt(double **A,int n,double ***obtain_q_r){
             U[i][j]=0;
         }
     }
-    //printf("gram starts\n");
 
     curr_column=(double *)malloc(n*sizeof (double ));
     assert(curr_column!=NULL);
@@ -47,23 +46,8 @@ void modified_gram_schmidt(double **A,int n,double ***obtain_q_r){
     free_arrays(U,n);
     free(curr_column);
     free(sec_column);
-    //printf("Q:\n");
-    for(k=0; k<n; k++){
-        for(j=0; j<n; j++){
-            //printf("%lf ",Q[k][j]);
-        }
-        //printf("\n");
-    }
-    //printf("--\n\n");
 
-    //printf("R:\n");
-    for(k=0; k<n; k++){
-        for(j=0; j<n; j++){
-            //printf("%lf ",R[k][j]);
-        }
-        //printf("\n");
-    }
-    //printf("--\n\n");
+
     obtain_q_r[0]=Q; obtain_q_r[1]=R;
-    //printf("gram returns\n");
+
 }
