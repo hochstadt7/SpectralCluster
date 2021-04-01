@@ -1,6 +1,7 @@
 #define PY_SSIZE_T_CLEAN
-#include <Python.h>
-#define MAX_ITER 200
+#include "C:\Users\Yaniv\AppData\Local\Programs\Python\Python39\include\Python.h"
+//#include <Python.h>
+#define MAX_ITER 300
 /*
  * Helper function that will not be exposed (meaning, should be static)
  */
@@ -206,9 +207,7 @@ static PyObject* k_means_api(PyObject *self, PyObject *args){
     if(!PyArg_ParseTuple(args, "OOiii", &data, &centroids, &k, &n, &d) || self == NULL)
         return NULL;
     ret=k_means(data, centroids, k, n, d);
-    res = PyList_New(0);
-    PyList_Append(res, convert_int_float(ret,n));
-    return PySequence_List(res);
+    return PySequence_List(convert_int_float(ret,n));
 }
 
 /*
