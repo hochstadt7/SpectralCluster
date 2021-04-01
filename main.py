@@ -7,11 +7,18 @@ import time
 #from KMeans import *
 from Qr import *
 from TextualOutput import *
+from JaccardMeasure import *
+from VisualizeResults import *
 from EigenGapSelection import *
 from matplotlib import pyplot as plt
 import section_four as foury
 import numpy as np
 
+# todo: find real values
+MAX_CAPACITY_N_2D = 1000
+MAX_CAPACITY_K_2D = 10
+MAX_CAPACITY_N_3D = 1000
+MAX_CAPACITY_K_3D = 10
 
 parser = argparse.ArgumentParser()
 parser.add_argument("k", type=int)
@@ -22,8 +29,8 @@ k = int(args.k)
 n = int(args.n)
 d = 2
 
-# data = DataGen.generate_data(n, d, k)
-data = DataGen.generate_circles(n, k)
+data, cluster_designation = DataGen.generate_data(n, d, k)
+# data = DataGen.generate_circles(n, k)
 
 # clusters = KMeans(n_clusters=k).fit(data)
 # print(clusters.labels_)
@@ -59,8 +66,10 @@ k, vectors = eigen_gap_heuristic(e_vectors, e_values, n)
 labels_k_means = np.array(kmeans_pp.process_pp(data, k, n, d))
 # calculate clusters using k-means on the eigen vectors
 labels_spectral = np.array(kmeans_pp.process_pp(vectors, k, n, k))
+jaccard_k_means = calculate_jaccard(cluster_designation, labels_k_means)
+jaccard_spectral = calculate_jaccard(cluster_designation, labels_spectral)
 
 data_txt(data, labels_spectral)
 cluster_txt(data, labels_k_means, labels_spectral)
-visualization_output(data, labels_k_means, labels_spectral, k, d, 100)
+visualization_output(data, labels_spectral, labels_k_means, k, d, jaccard_spectral, jaccard_k_means)
 

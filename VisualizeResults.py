@@ -34,6 +34,6 @@ def visualization_output(data, labels_spectral, labels_k_means, k, dimension, ja
         plt.figtext(0.5, 0.01, "Data was generated from the values:\nn=" + str(len(data)) + ", k=" + str(
             k) + "\nThe k that used for both algorithms was " + str(
             dimension) + "\nThe Jaccard measure for Spectral Clustering: " + str(
-            jaccard_spectral) + "\n The Jaccard measure for K-means: " + str(jaccard_kmeans), ha="center", fontsize=10,
+            round(jaccard_spectral, 2)) + "\n The Jaccard measure for K-means: " + str(round(jaccard_kmeans, 2)), ha="center", fontsize=10,
                     bbox={"facecolor": "orange", "alpha": 0.5, "pad": 5})
         pdf.savefig()

@@ -3,7 +3,8 @@ import numpy as np
 
 
 def generate_data(n, d, k):
-    return make_blobs(n_samples=n, n_features=d, centers=k)[0]
+    blobs = make_blobs(n_samples=n, n_features=d, centers=k)
+    return blobs[0], blobs[1]
 
 
 def generate_circle_sample_data(r, n, sigma):
