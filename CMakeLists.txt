@@ -3,4 +3,4 @@ project(SpecturalCluster C)
 
 set(CMAKE_C_STANDARD 90)
 
-add_executable(SpecturalCluster GramShmidt.c Qr.c ShmidtAux.c ShmidtAux.h Qr.h GramShmidt.h EigenValsCPython.c EigengapHeuristic.c EigengapHeuristic.h venv/kmeans.c kmeans.c)
+add_executable(SpecturalCluster GramShmidt.c Qr.c ShmidtAux.c ShmidtAux.h Qr.h GramShmidt.h EigenValsCPython.c EigengapHeuristic.c EigengapHeuristic.h  kmeans.c)
