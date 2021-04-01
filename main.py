@@ -1,17 +1,13 @@
 import DataGen
 import GraphGen
 import kmeans_pp
-import TextualOutput
 from sklearn.cluster import KMeans
 import argparse
 import time
-from GramSchmidt import *
 #from KMeans import *
-from kmeans_pp import *
 from Qr import *
 from TextualOutput import *
 from EigenGapSelection import *
-import numpy as np
 from matplotlib import pyplot as plt
 import section_four as foury
 import numpy as np
@@ -26,49 +22,45 @@ k = int(args.k)
 n = int(args.n)
 d = 2
 
-data = DataGen.generate_data(n, d, k) #DataGen.generate_circles(n, k)
+# data = DataGen.generate_data(n, d, k)
+data = DataGen.generate_circles(n, k)
 
-clusters = KMeans(n_clusters=k).fit(data)
-'''print(clusters.labels_)
-colors = ['r', 'g', 'b', 'y', 'c', 'm', 'r', 'g', 'b', 'y', 'c', 'm']
-fig, ax = plt.subplots()
-for i in range(k):
-    points = np.array([data[j] for j in range(len(data)) if clusters.labels_[j] == i])
-    ax.scatter(points[:, 0], points[:, 1], s=7, c=colors[i])
-plt.savefig('plot_kmeans.pdf')'''
+# clusters = KMeans(n_clusters=k).fit(data)
+# print(clusters.labels_)
 
+clusters = kmeans_pp.process_pp(data, k, n, d)
+print(clusters)
 
+# generate weight matrix from observations
 weights = GraphGen.get_weight_matrix(n, data)
-
+# create diagonal matrix based on weight matrix
 diagonal = GraphGen.get_diagonal_degree_matrix(n, weights)
-
+# calculate the graph laplacian
 laplacian = GraphGen.get_laplacian_matrix(n, diagonal, weights)
 
-ret = foury.calc_eigen_values_vectors(laplacian.tolist(), n)
-#e_vectors, e_values_diag = qr_iter(laplacian, n)
+# ret = foury.calc_eigen_values_vectors(laplacian.tolist(), n)
+# e_vectors = np.array(ret[1])
+# e_values_diag = np.array(ret[0])
 
-e_vectors = np.array(ret[1])
-e_values_diag = np.array(ret[0])
-#with np.printoptions(precision=3, suppress=True):
+# use QR iteration to find eigen values/vectors
+e_vectors, e_values_diag = qr_iter(laplacian, n)
+
+# with np.printoptions(precision=3, suppress=True):
 #   print(e_values_diag)
-e_values = np.diagonal(e_values_diag) #need to convert back to numpy array before this row
+
+# place eigen values in a diagonal matrix
+e_values = np.diagonal(e_values_diag)
+# calculate k based on the eigen gaps, and select the first k eigen vectors
 k, vectors = eigen_gap_heuristic(e_vectors, e_values, n)
-#clusters = KMeans(n_clusters=k).fit(vectors.tolist())
-ret_kmeans=kmeans_pp.process_pp(data, k, n, d)
-labels=np.array(ret_kmeans[0])
 
-data_txt(data,labels)
-cluster_txt(data,labels,labels)
-visualziation_output(data,labels,labels,k,d,100)
+# clusters = KMeans(n_clusters=k).fit(vectors.tolist())
 
+# calculate clusters directly on data using k-means
+labels_k_means = np.array(kmeans_pp.process_pp(data, k, n, d))
+# calculate clusters using k-means on the eigen vectors
+labels_spectral = np.array(kmeans_pp.process_pp(vectors, k, n, k))
 
-'''print(labels)
-colors = ['r', 'g', 'b', 'y', 'c', 'm', 'r', 'g', 'b', 'y', 'c', 'm']
-fig, ax = plt.subplots()
-for i in range(k):
-    points = np.array([data[j] for j in range(len(data)) if labels[j] == i])
-    ax.scatter(points[:, 0], points[:, 1], s=7, c=colors[i])
-plt.savefig('plot_spectral.pdf')'''
-
-
+data_txt(data, labels_spectral)
+cluster_txt(data, labels_k_means, labels_spectral)
+visualization_output(data, labels_k_means, labels_spectral, k, d, 100)
 
