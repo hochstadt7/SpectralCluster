@@ -14,29 +14,42 @@ from matplotlib import pyplot as plt
 import section_four as foury
 import numpy as np
 
+print("Welcome!\n")
+
 # todo: find real values
-MAX_CAPACITY_N_2D = 1000
-MAX_CAPACITY_K_2D = 10
-MAX_CAPACITY_N_3D = 1000
-MAX_CAPACITY_K_3D = 10
+MAX_CAPACITY = {
+    2: {"n": 1500, "k": 10, "d": "2d"},
+    3: {"n": 1000, "k": 5, "d": "3d"}
+}
+
+for capacity in MAX_CAPACITY.values():
+    print("In " + str(capacity["d"]) + " mode, the program can handle up to n="+str(capacity["n"])+" points," +
+          " and up to k=" + str(capacity["k"]) + " clusters\n")
+
+d = np.random.choice(2, 1)[0] + 2
 
 parser = argparse.ArgumentParser()
 parser.add_argument("k", type=int)
 parser.add_argument("n", type=int)
 parser.add_argument("Random", type=bool)
 args = parser.parse_args()
-k = int(args.k)
-n = int(args.n)
-d = 2
+random = int(args.Random)
+if random:
+    n = MAX_CAPACITY[d]["n"]
+    k = MAX_CAPACITY[d]["k"]
+else:
+    n = int(args.n)
+    k = int(args.k)
+real_k = k
 
-data, cluster_designation = DataGen.generate_data(n, d, k)
-# data = DataGen.generate_circles(n, k)
+data, cluster_designation = DataGen.generate_data(n, d, real_k)
+# data, cluster_designation = DataGen.generate_circles(n, k, d)
 
 # clusters = KMeans(n_clusters=k).fit(data)
 # print(clusters.labels_)
 
-clusters = kmeans_pp.process_pp(data, k, n, d)
-print(clusters)
+# clusters = kmeans_pp.process_pp(data, k, n, d)
+# print(clusters)
 
 # generate weight matrix from observations
 weights = GraphGen.get_weight_matrix(n, data)
@@ -58,7 +71,7 @@ e_vectors, e_values_diag = qr_iter(laplacian, n)
 # place eigen values in a diagonal matrix
 e_values = np.diagonal(e_values_diag)
 # calculate k based on the eigen gaps, and select the first k eigen vectors
-k, vectors = eigen_gap_heuristic(e_vectors, e_values, n)
+k, vectors = eigen_gap_heuristic(e_vectors, e_values, n, k)
 
 # clusters = KMeans(n_clusters=k).fit(vectors.tolist())
 
@@ -69,7 +82,6 @@ labels_spectral = np.array(kmeans_pp.process_pp(vectors, k, n, k))
 jaccard_k_means = calculate_jaccard(cluster_designation, labels_k_means)
 jaccard_spectral = calculate_jaccard(cluster_designation, labels_spectral)
 
-data_txt(data, labels_spectral)
+data_txt(data, cluster_designation)
 cluster_txt(data, labels_k_means, labels_spectral)
-visualization_output(data, labels_spectral, labels_k_means, k, d, jaccard_spectral, jaccard_k_means)
-
+visualization_output(data, labels_spectral, labels_k_means, k, real_k, d, jaccard_spectral, jaccard_k_means)

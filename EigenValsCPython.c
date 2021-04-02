@@ -1,5 +1,6 @@
 #define PY_SSIZE_T_CLEAN
-#include "Python.h"
+#include "C:\Users\Yaniv\AppData\Local\Programs\Python\Python39\include\Python.h"
+//#include <Python.h>
 #include "Qr.h"
 #include "ShmidtAux.h"
 #include "EigengapHeuristic.h"

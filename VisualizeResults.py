@@ -4,7 +4,7 @@ import numpy as np
 
 
 # dimension is either 2 or 3
-def visualization_output(data, labels_spectral, labels_k_means, k, dimension, jaccard_spectral, jaccard_kmeans):
+def visualization_output(data, labels_spectral, labels_k_means, k, real_k, dimension, jaccard_spectral, jaccard_kmeans):
     colors = ['r', 'g', 'b', 'y', 'c', 'm', 'r', 'g', 'b', 'y', 'c', 'm']
     with PdfPages('clusters.pdf') as pdf:
         fig = plt.figure()
@@ -32,8 +32,8 @@ def visualization_output(data, labels_spectral, labels_k_means, k, dimension, ja
             ax.set_title('K-means')
 
         plt.figtext(0.5, 0.01, "Data was generated from the values:\nn=" + str(len(data)) + ", k=" + str(
-            k) + "\nThe k that used for both algorithms was " + str(
-            dimension) + "\nThe Jaccard measure for Spectral Clustering: " + str(
+            real_k) + "\nThe k that used for both algorithms was " + str(
+            k) + "\nThe Jaccard measure for Spectral Clustering: " + str(
             round(jaccard_spectral, 2)) + "\n The Jaccard measure for K-means: " + str(round(jaccard_kmeans, 2)), ha="center", fontsize=10,
                     bbox={"facecolor": "orange", "alpha": 0.5, "pad": 5})
         pdf.savefig()
