@@ -1,19 +1,18 @@
-
 #include <stdlib.h>
 #include <stdio.h>
 #include "ShmidtAux.h"
 #include <assert.h>
 
 
-void modified_gram_schmidt(double **A, int n, double ***obtain_q_r) {
+void modified_gram_schmidt(double **A, int n, double ***QR) {
     int i, j, k;
     double **R, **Q;
     double **U;
     double *curr_column, *sec_column;
 
-    U = my_alloc(n, n);
-    R = my_alloc(n, n);
-    Q = my_alloc(n, n);
+    U = allocate_matrix(n, n);
+    R = allocate_matrix(n, n);
+    Q = allocate_matrix(n, n);
 
     for (i = 0; i < n; i++) {
         for (j = 0; j < n; j++) {
@@ -27,7 +26,7 @@ void modified_gram_schmidt(double **A, int n, double ***obtain_q_r) {
     assert(curr_column != NULL);
     sec_column = (double *) malloc(n * sizeof(double));
     assert(sec_column != NULL);
-    copy_arrays(U, A, n);
+    copy_matrix(U, A, n);
 
     for (i = 0; i < n; i++) {
         set_col(U, curr_column, i, n);
@@ -44,12 +43,10 @@ void modified_gram_schmidt(double **A, int n, double ***obtain_q_r) {
             }
         }
     }
-    free_arrays(U, n);
+    free_matrix(U, n);
     free(curr_column);
     free(sec_column);
 
-
-    obtain_q_r[0] = Q;
-    obtain_q_r[1] = R;
-
+    QR[0] = Q;
+    QR[1] = R;
 }

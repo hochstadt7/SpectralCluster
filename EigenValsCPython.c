@@ -60,13 +60,13 @@ static PyObject* calc_eigen_values_vectors(PyObject *self, PyObject *args){
         err_message("not a list\n");
         return NULL;
     }
-    data = my_alloc(n, n);
+    data = allocate_matrix(n, n);
     convert_float_double(data, laplacian);
     ret = qr_iter(data, n);
     res = PyList_New(0);
     PyList_Append(res, convert_double_float(ret[0], n));
     PyList_Append(res, convert_double_float(ret[1], n));
-    free_arrays(data,n);
+    free_matrix(data, n);
     return PySequence_List(res);
 }
 

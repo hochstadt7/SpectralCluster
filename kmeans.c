@@ -6,12 +6,12 @@
  * Helper function that will not be exposed (meaning, should be static)
  */
 
-static double **my_alloc(int first_layer, int second_layer){
+static double **allocate_matrix(int dimension_1, int dimension_2){
     int counter;
-    double **ret=(double **)malloc(first_layer*sizeof(double *));
+    double **ret=(double **)malloc(dimension_1 * sizeof(double *));
     assert(ret!=NULL);
-    for(counter=0; counter<first_layer; counter++){
-        ret[counter]=(double *)malloc(second_layer*sizeof(double ));
+    for(counter=0; counter < dimension_1; counter++){
+        ret[counter]=(double *)malloc(dimension_2 * sizeof(double ));
         assert(ret[counter]!=NULL);
     }
     return ret;
@@ -19,7 +19,7 @@ static double **my_alloc(int first_layer, int second_layer){
 
 /* terminal condition- clusters weren't change */
 static int my_compare(double **first, double **second, int k, int d){
-    int counter_k,counter_d;
+    int counter_k, counter_d;
     for(counter_k=0; counter_k<k; counter_k++){
         for(counter_d=0; counter_d<d; counter_d++){
             if (first[counter_k][counter_d]!=second[counter_k][counter_d])
@@ -105,11 +105,11 @@ static int* k_means(PyObject *data_python ,PyObject *centroids_python , int k, i
     int counter_k, counter_n, counter_d, closest, *length, *labels;
     double closest_dist,dist,**prev_centroids,***clusters,*new_centroid,**data,**centroids;
 
-    data = my_alloc(n,d);
-    centroids = my_alloc(k,d);
+    data = allocate_matrix(n, d);
+    centroids = allocate_matrix(k, d);
     convert_float_double(data, centroids, data_python, centroids_python);
     /* similar to hw1*/
-    prev_centroids = my_alloc(k,d);
+    prev_centroids = allocate_matrix(k, d);
     labels=(int*)malloc(n*sizeof(int));
     assert(prev_centroids!=NULL&&labels!=NULL);
     converge=0;

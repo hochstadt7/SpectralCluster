@@ -9,7 +9,7 @@ from JaccardMeasure import *
 from VisualizeResults import *
 from EigenGapSelection import *
 import numpy as np
-import section_four as foury
+import section_four as qr_c
 
 DEBUG = True
 
@@ -73,7 +73,7 @@ laplacian = GraphGen.get_laplacian_matrix(n, diagonal, weights)
 Clocker.log_step("QR iteration")
 # use QR iteration to find eigen values/vectors
 # e_vectors, e_values_diag = qr_iter(laplacian, n)
-ret = foury.calc_eigen_values_vectors(laplacian.tolist(), n)
+ret = qr_c.calc_eigen_values_vectors(laplacian.tolist(), n)
 e_vectors = np.array(ret[1])
 e_values_diag = np.array(ret[0])
 
