@@ -8,8 +8,7 @@ def qr_iter(a, n):
     q_ort = np.eye(n)
     a_diag = a.copy()
     for i in range(n):
-        # TODO: replace with our GS implementation
-        q, r = GramSchmidt.modified_gram_schmidt_np(a_diag)
+        q, r = GramSchmidt.modified_gram_schmidt(a_diag, n)
         a_diag = np.matmul(r, q)
         new_q = np.matmul(q_ort, q)
         if np.max(np.abs(np.abs(new_q) - np.abs(q_ort))) < epsilon:
