@@ -100,7 +100,7 @@ Clocker.log_step("txt output")
 data_txt(data, cluster_designation)
 # output clusters as text
 Clocker.log_step("visual output")
-cluster_txt(data, labels_k_means, labels_spectral)
+cluster_txt(data, labels_k_means, labels_spectral, k)
 # output pdf visualization
 visualization_output(data, labels_spectral, labels_k_means, k, real_k, d, jaccard_spectral, jaccard_k_means)
 Clocker.log_by_duration()

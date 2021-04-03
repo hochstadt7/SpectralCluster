@@ -11,14 +11,12 @@ def data_txt(data, labels):
     f.close()
 
 
-def cluster_txt(data, labels_normalized, labels_k_means):
+def cluster_txt(data, labels_normalized, labels_k_means, k):
     f = open("clusters.txt", "w")
-    num_of_clusters = len(data)  # number of clusters
-    f.write(str(num_of_clusters) + '\n')
-    for i in range(num_of_clusters):
-        f.write(
-            ",".join([str(labels_normalized[j]) for j in range(num_of_clusters) if labels_normalized[j] == i]) + "\n")
-    for i in range(num_of_clusters):
-        f.write(",".join([str(labels_k_means[j]) for j in range(num_of_clusters) if labels_k_means[j] == i]) + "\n")
+    f.write(str(k) + '\n')
+    for i in range(k):
+        f.write(",".join([str(j) for j in range(len(data)) if labels_normalized[j] == i]) + "\n")
+    for i in range(k):
+        f.write(",".join([str(j) for j in range(len(data)) if labels_k_means[j] == i]) + "\n")
     f.close()
 
