@@ -1,17 +1,15 @@
 import DataGen
 import GraphGen
 import kmeans_pp
-from sklearn.cluster import KMeans
+# from sklearn.cluster import KMeans
 import argparse
-import time
-#from KMeans import *
+# import time
 from Qr import *
 from TextualOutput import *
 from JaccardMeasure import *
 from VisualizeResults import *
 from EigenGapSelection import *
-from matplotlib import pyplot as plt
-import section_four as foury
+# import section_four as foury
 import numpy as np
 
 print("Welcome!\n")
@@ -31,18 +29,25 @@ d = np.random.choice(2, 1)[0] + 2
 parser = argparse.ArgumentParser()
 parser.add_argument("k", type=int)
 parser.add_argument("n", type=int)
-parser.add_argument("Random", type=bool)
+parser.add_argument("Random", type=int)
 args = parser.parse_args()
-random = int(args.Random)
+random = args.Random
+# if in Random mode, generate random N and K values
 if random:
-    n = MAX_CAPACITY[d]["n"]
-    k = MAX_CAPACITY[d]["k"]
+    n = np.random.choice(round(MAX_CAPACITY[d]["n"] / 2), 1)[0] + round(MAX_CAPACITY[d]["n"] / 2)
+    real_k = np.random.choice(round(MAX_CAPACITY[d]["k"] / 2), 1)[0] + round(MAX_CAPACITY[d]["k"] / 2)
+# otherwise, use the supplied N, K arguments
 else:
     n = int(args.n)
-    k = int(args.k)
-real_k = k
+    real_k = int(args.k)
+# real_k stores the K value used to generate the clusters
+# k is initialized to real_k, but may later store the k value calculated via the eigen gap heuristic
+k = real_k
 
+# generate blob clusters
 data, cluster_designation = DataGen.generate_data(n, d, real_k)
+
+# generate concentric circles
 # data, cluster_designation = DataGen.generate_circles(n, k, d)
 
 # clusters = KMeans(n_clusters=k).fit(data)
@@ -79,9 +84,13 @@ k, vectors = eigen_gap_heuristic(e_vectors, e_values, n, k)
 labels_k_means = np.array(kmeans_pp.process_pp(data, k, n, d))
 # calculate clusters using k-means on the eigen vectors
 labels_spectral = np.array(kmeans_pp.process_pp(vectors, k, n, k))
+# jaccard value for direct k-means algorithm
 jaccard_k_means = calculate_jaccard(cluster_designation, labels_k_means)
+# jaccard value for spectral clustering algorithm
 jaccard_spectral = calculate_jaccard(cluster_designation, labels_spectral)
-
+# output data as text
 data_txt(data, cluster_designation)
+# output clusters as text
 cluster_txt(data, labels_k_means, labels_spectral)
+# output pdf visualization
 visualization_output(data, labels_spectral, labels_k_means, k, real_k, d, jaccard_spectral, jaccard_k_means)
