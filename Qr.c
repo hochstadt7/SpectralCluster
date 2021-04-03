@@ -63,13 +63,12 @@ double ***qr_iter(double **A, int n) {
         copy_arrays(R, obtain_q_r[1], n);
         free_arrays(obtain_q_r[0], n);
         free_arrays(obtain_q_r[1], n);
-        /* updated_Q_tag A_tag matrix to be RQ */
+        /* updated A_tag matrix to be RQ */
         mult_matrices(R, Q, A_tag, n);
         /* multiply Q_tag with Q, store in updated_Q_tag  */
         mult_matrices(Q_tag, Q, updated_Q_tag, n);
         /* check epsilon difference */
         if (!epsilon_diff(Q_tag, updated_Q_tag, n)) {
-
             ret[0] = A_tag;
             ret[1] = Q_tag;
             free_arrays(updated_Q_tag, n);
@@ -81,7 +80,6 @@ double ***qr_iter(double **A, int n) {
         /* set Q_tag to updated_Q_tag */
         copy_arrays(Q_tag, updated_Q_tag, n);
     }
-
     ret[0] = A_tag;
     ret[1] = Q_tag;
     free(obtain_q_r);
