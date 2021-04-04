@@ -41,10 +41,15 @@ int epsilon_diff(double **first, double **second, int n) {
 double ***qr_iter(double **A, int n) {
     /* variable declaration */
     double **A_tag, **Q_tag, **updated_Q_tag, **Q, **R;
+    double **GS_R, **GS_Q, **GS_U;
     double ***ret, ***obtain_q_r;
     int i;
     Q = allocate_matrix(n, n);
     R = allocate_matrix(n, n);
+    /* memory for matrices used in the Gram Schimdt algorithm are allocated once, here */
+    GS_U = allocate_matrix(n, n);
+    GS_R = allocate_matrix(n, n);
+    GS_Q = allocate_matrix(n, n);
     ret = (double ***) malloc(2 * sizeof(double **));
     assert(ret != NULL);
     obtain_q_r = (double ***) malloc(2 * sizeof(double **));
@@ -56,17 +61,16 @@ double ***qr_iter(double **A, int n) {
     Q_tag = get_scalar_matrix(n, 1);
     /* initiate updated_Q_tag */
     updated_Q_tag = get_scalar_matrix(n, 0);
+
     for (i = 0; i < n; i++) {
-        modified_gram_schmidt(A_tag, n, obtain_q_r);
+        modified_gram_schmidt(A_tag, n, obtain_q_r,GS_R, GS_Q, GS_U);
         /* move results from array to the Q, R variables */
         copy_matrix(Q, obtain_q_r[0], n);
         copy_matrix(R, obtain_q_r[1], n);
-        free_matrix(obtain_q_r[0], n);
-        free_matrix(obtain_q_r[1], n);
         /* updated A_tag matrix to be RQ */
-        mult_matrices(R, Q, A_tag, n);
+        mult_matrices((const double **) R, (const double **) Q, A_tag, n);
         /* multiply Q_tag with Q, store in updated_Q_tag  */
-        mult_matrices(Q_tag, Q, updated_Q_tag, n);
+        mult_matrices((const double **) Q_tag, (const double **) Q, updated_Q_tag, n);
         /* check epsilon difference */
         if (!epsilon_diff(Q_tag, updated_Q_tag, n)) {
             ret[0] = A_tag;
@@ -74,6 +78,9 @@ double ***qr_iter(double **A, int n) {
             free_matrix(updated_Q_tag, n);
             free_matrix(Q, n);
             free_matrix(R, n);
+            free_matrix(GS_Q, n);
+            free_matrix(GS_R, n);
+            free_matrix(GS_U, n);
             free(obtain_q_r);
             return ret;
         }
@@ -86,5 +93,8 @@ double ***qr_iter(double **A, int n) {
     free_matrix(updated_Q_tag, n);
     free_matrix(Q, n);
     free_matrix(R, n);
+    free_matrix(GS_Q, n);
+    free_matrix(GS_R, n);
+    free_matrix(GS_U, n);
     return ret;
 }

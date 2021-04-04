@@ -4,15 +4,9 @@
 #include <assert.h>
 
 
-void modified_gram_schmidt(double **A, int n, double ***QR) {
+void modified_gram_schmidt(double **A, int n, double ***QR, double **R, double **Q, double **U) {
     int i, j, k;
-    double **R, **Q;
-    double **U;
     double *curr_column, *sec_column;
-
-    U = allocate_matrix(n, n);
-    R = allocate_matrix(n, n);
-    Q = allocate_matrix(n, n);
 
     for (i = 0; i < n; i++) {
         for (j = 0; j < n; j++) {
@@ -43,7 +37,6 @@ void modified_gram_schmidt(double **A, int n, double ***QR) {
             }
         }
     }
-    free_matrix(U, n);
     free(curr_column);
     free(sec_column);
 
