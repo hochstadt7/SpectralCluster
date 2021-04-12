@@ -1,5 +1,5 @@
 #define PY_SSIZE_T_CLEAN
-#include "C:\Users\Yaniv\AppData\Local\Programs\Python\Python39\include\Python.h"
+#include "Python.h"
 //#include <Python.h>
 #define MAX_ITER 300
 /*
@@ -237,7 +237,7 @@ static struct PyModuleDef moduledef = {
 
 
 /*
- * The PyModuleDef structure, in turn, must be passed to the interpreter in the module’s initialization function.
+ * The PyModuleDef structure, in turn, must be passed to the interpreter in the moduleג€™s initialization function.
  * The initialization function must be named PyInit_name(), where name is the name of the module and should match
  * what we wrote in struct PyModuleDef.
  * This should be the only non-static item defined in the module file
