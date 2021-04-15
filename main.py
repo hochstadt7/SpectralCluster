@@ -2,7 +2,7 @@ import DataGen
 import GraphGen
 import kmeans_pp
 import argparse
-import Clocker
+#import Clocker
 from Qr import *
 from TextualOutput import *
 from JaccardMeasure import *
@@ -11,7 +11,7 @@ from EigenGapSelection import *
 import numpy as np
 import section_four as qr_c
 
-DEBUG = True
+#DEBUG = True
 
 print("Welcome!\n")
 
@@ -34,6 +34,7 @@ parser.add_argument("n", type=int)
 parser.add_argument("Random", type=int)
 args = parser.parse_args()
 random = args.Random
+
 # if in Random mode, generate random N and K values
 if random:
     print("Random = True\n")

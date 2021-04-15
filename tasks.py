@@ -1,11 +1,11 @@
 from invoke import task, call
 
-@task(aliases=['del'])
-def clean(c):
-    c.run("rm section_four.cpython-38-x86_64-linux-gnu.so")
-
 @task
-def run(c, k=0, n=0, Random=1):
+def run(c, k=0, n=0, Random=True):
+    temp=0
     c.run("python3.8.5 setupmatrix.py build_ext --inplace")
     c.run("python3.8.5 SetupKmeans.py build_ext --inplace")
-    c.run(f"python3.8.5 main.py {k} {n} {Random}")
+
+    if Random:
+        temp=1
+    c.run(f"python3.8.5 main.py {k} {n} {temp}")
