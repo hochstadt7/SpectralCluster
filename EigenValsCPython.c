@@ -1,14 +1,10 @@
 #define PY_SSIZE_T_CLEAN
-#include "C:\Users\Yaniv\AppData\Local\Programs\Python\Python39\include\Python.h"
+#include "Python.h"
 //#include <Python.h>
 #include "Qr.h"
 #include "ShmidtAux.h"
 #include "EigengapHeuristic.h"
 
-static void err_message(char *err){
-    printf("%s",err);
-    exit(1);
-}
 
 static void convert_float_double(double**data, PyObject *data_python) {
     Py_ssize_t n, d, counter_n,counter_d;

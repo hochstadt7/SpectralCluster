@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "ShmidtAux.h"
-#include <assert.h>
 
 
 void modified_gram_schmidt(double **A, int n, double ***QR, double **R, double **Q, double **U) {
@@ -17,9 +16,10 @@ void modified_gram_schmidt(double **A, int n, double ***QR, double **R, double *
     }
 
     curr_column = (double *) malloc(n * sizeof(double));
-    assert(curr_column != NULL);
     sec_column = (double *) malloc(n * sizeof(double));
-    assert(sec_column != NULL);
+    if(curr_column==NULL||sec_column==NULL){
+        err_message("Allocation failed.\n");
+    }
     copy_matrix(U, A, n);
 
     for (i = 0; i < n; i++) {
@@ -28,8 +28,8 @@ void modified_gram_schmidt(double **A, int n, double ***QR, double **R, double *
         for (j = 0; j < n; j++) {
             Q[j][i] = ((curr_column[j]) / (R[i][i]));
         }
+        set_col(Q, curr_column, i, n);
         for (j = i + 1; j < n; j++) {
-            set_col(Q, curr_column, i, n);
             set_col(U, sec_column, j, n);
             R[i][j] = mult_vectors(curr_column, sec_column, n);
             for (k = 0; k < n; k++) {

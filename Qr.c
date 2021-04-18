@@ -3,7 +3,7 @@
 #include "GramShmidt.h"
 #include "ShmidtAux.h"
 #include <math.h>
-#include <assert.h>
+
 
 #define EPSILON 0.0001
 
@@ -51,9 +51,14 @@ double ***qr_iter(double **A, int n) {
     GS_R = allocate_matrix(n, n);
     GS_Q = allocate_matrix(n, n);
     ret = (double ***) malloc(2 * sizeof(double **));
-    assert(ret != NULL);
+    if(ret==NULL){
+        err_message("Allocation failed.\n");
+    }
     obtain_q_r = (double ***) malloc(2 * sizeof(double **));
-    assert(obtain_q_r != NULL);
+    if(obtain_q_r==NULL){
+        err_message("Allocation failed.\n");
+    }
+
     /* initiate A_tag */
     A_tag = allocate_matrix(n, n);
     copy_matrix(A_tag, A, n);
