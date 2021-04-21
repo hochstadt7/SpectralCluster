@@ -3,22 +3,19 @@
 #include <math.h>
 #include "ShmidtAux.h"
 
-void err_message(char *err){
-    printf("%s",err);
-    exit(1);
-}
-
 
 double **allocate_matrix(int dimension_1, int dimension_2) {
     int counter;
     double **ret = (double **) malloc(dimension_1 * sizeof(double *));
     if(ret==NULL){
-        err_message("Allocation failed.\n");
+        printf("Error: allocation failed\n");
+        return NULL;
+
     }
     for (counter = 0; counter < dimension_1; counter++) {
         ret[counter] = (double *) malloc(dimension_2 * sizeof(double));
         if(ret[counter]==NULL){
-            err_message("Allocation failed.\n");
+            return NULL;
         }
     }
     return ret;

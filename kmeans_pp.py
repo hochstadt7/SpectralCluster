@@ -2,11 +2,6 @@ import numpy as np
 import pandas as pd
 import my_kmeans as ckmeans
 
-'''if not (d > 0 and n > 0 and 0 < k < n and max_iteration > 0):
-    print("Illegal input\n")
-    exit(0)'''
-
-
 def dist(a, b):
     return np.sum(np.power(np.subtract(a, b), 2))
 

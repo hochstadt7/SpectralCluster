@@ -25,7 +25,7 @@ for capacity in MAX_CAPACITY.values():
     print("In " + str(capacity["d"]) + " mode, the program can handle up to n="+str(capacity["n"])+" points," +
           " and up to k=" + str(capacity["k"]) + " clusters\n")
 
-d = np.random.choice(2, 1)[0] + 2
+d = 2
 print(str(d)+"d Mode\n")
 
 parser = argparse.ArgumentParser()
@@ -73,7 +73,10 @@ laplacian = GraphGen.get_laplacian_matrix(n, diagonal, weights)
 
 # use QR iteration to find eigen values/vectors
 # e_vectors, e_values_diag = qr_iter(laplacian, n)
-ret = qr_c.calc_eigen_values_vectors(laplacian.tolist(), n)
+try:
+    ret = qr_c.calc_eigen_values_vectors(laplacian.tolist(), n)
+except:
+    exit(0)
 e_vectors = np.array(ret[1])
 e_values_diag = np.array(ret[0])
 
@@ -83,10 +86,17 @@ e_values = np.diagonal(e_values_diag)
 k, vectors = eigen_gap_heuristic(e_vectors, e_values, n, real_k, random)
 
 # calculate clusters directly on data using k-means
-
-labels_k_means = np.array(kmeans_pp.process_pp(data, k, n, d))
+try:
+    temp=kmeans_pp.process_pp(data, k, n, d)
+except:
+    exit(0)
+labels_k_means = np.array(temp)
 # calculate clusters using k-means on the eigen vectors
-labels_spectral = np.array(kmeans_pp.process_pp(vectors, k, n, k))
+try:
+    temp=kmeans_pp.process_pp(vectors, k, n, k)
+except:
+    exit(0)
+labels_spectral = np.array(temp)
 # jaccard value for direct k-means algorithm
 
 jaccard_k_means = calculate_jaccard(cluster_designation, labels_k_means)
@@ -100,4 +110,3 @@ data_txt(data, cluster_designation)
 cluster_txt(data, labels_k_means, labels_spectral, k)
 # output pdf visualization
 visualization_output(data, labels_spectral, labels_k_means, k, real_k, d, jaccard_spectral, jaccard_k_means)
-
