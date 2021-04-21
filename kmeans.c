@@ -9,10 +9,17 @@
 static double **allocate_matrix(int dimension_1, int dimension_2){
     int counter;
     double **ret=(double **)malloc(dimension_1 * sizeof(double *));
-    assert(ret!=NULL);
+    if(ret==NULL){
+
+        return NULL;
+    }
     for(counter=0; counter < dimension_1; counter++){
         ret[counter]=(double *)malloc(dimension_2 * sizeof(double ));
-        assert(ret[counter]!=NULL);
+        if(ret[counter]==NULL){
+
+            return NULL;
+        }
+
     }
     return ret;
 }
@@ -29,11 +36,6 @@ static int my_compare(double **first, double **second, int k, int d){
     return 1;
 }
 
-static void err_message(char *err){
-    printf("%s",err);
-    exit(1);
-}
-
 static void free_clusters(double ****clusters, int *length, int k){
     int counter_k, counter_len;
     for(counter_k=0; counter_k<k; counter_k++){
@@ -46,7 +48,7 @@ static void free_clusters(double ****clusters, int *length, int k){
 }
 
 /* conversion from python type to c type */
-static void convert_float_double(double**data, double**centroids, PyObject *data_python, PyObject *centroids_python) {
+static PyObject* convert_float_double(double**data, double**centroids, PyObject *data_python, PyObject *centroids_python) {
     Py_ssize_t k, n, d, counter_k, counter_n, counter_d;
     PyObject *sublist;
 
@@ -66,7 +68,7 @@ static void convert_float_double(double**data, double**centroids, PyObject *data
     }
     if (PyErr_Occurred()) {
         PyErr_Print();
-        err_message("Failed to convert float to double\n");
+        return NULL;
     }
 
     /*convert centroids*/
@@ -76,8 +78,11 @@ static void convert_float_double(double**data, double**centroids, PyObject *data
             centroids[counter_k][counter_d] = PyFloat_AsDouble(PyList_GetItem(sublist, counter_d));
         }
     }
-    if(PyErr_Occurred())
-        err_message("Failed to convert float to double\n");
+    if (PyErr_Occurred()) {
+        PyErr_Print();
+        return NULL;
+    }
+    return data_python;
 }
 
 static PyObject* convert_int_float(int *data, int n) {
@@ -86,12 +91,14 @@ static PyObject* convert_int_float(int *data, int n) {
     PyObject *curr;
     my_list = PyList_New(0);
     if(my_list == NULL) {
-        err_message("allocation failed\n");
+        printf("Error: allocation failed\n");
+        return NULL;
     }
     for(j = 0; j < n; j++){
         curr = Py_BuildValue("i",data[j]);
         if(PyErr_Occurred()){
-            err_message("Failed to convert int to float\n");
+            PyErr_Print();
+            return NULL;
         }
         PyList_Append(my_list, curr);
     }
@@ -107,11 +114,22 @@ static int* k_means(PyObject *data_python ,PyObject *centroids_python , int k, i
 
     data = allocate_matrix(n, d);
     centroids = allocate_matrix(k, d);
-    convert_float_double(data, centroids, data_python, centroids_python);
-    /* similar to hw1*/
     prev_centroids = allocate_matrix(k, d);
+    if(!data||!centroids||!prev_centroids){
+        printf("Error: allocation failed\n");
+        return NULL;
+    }
+
+    if(!convert_float_double(data, centroids, data_python, centroids_python))
+    {
+        return NULL;
+    }
+    /* similar to hw1*/
     labels=(int*)malloc(n*sizeof(int));
-    assert(prev_centroids!=NULL&&labels!=NULL);
+    if(labels==NULL){
+        printf("Error: allocation failed\n");
+        return NULL;
+    }
     converge=0;
 
     for (t=0; t<MAX_ITER; t++){
@@ -121,10 +139,16 @@ static int* k_means(PyObject *data_python ,PyObject *centroids_python , int k, i
             }
         }
         length=calloc(k,sizeof(Py_ssize_t));
-        assert(length!=NULL);
+        if(length==NULL){
+            printf("Error: allocation failed\n");
+            return NULL;
+        }
 
         clusters=(double ***)malloc(k*sizeof(double **));
-        assert(clusters!=NULL);
+        if(clusters==NULL){
+            printf("Error: allocation failed\n");
+            return NULL;
+        }
 
         /* adjust each data point to his cluster */
         for (counter_n = 0; counter_n < n; counter_n++) {
@@ -140,14 +164,23 @@ static int* k_means(PyObject *data_python ,PyObject *centroids_python , int k, i
                     closest = counter_k;
                 }
             }
-            if(length[closest]==0)
+            if(length[closest]==0){
                 clusters[closest]=(double**) malloc(sizeof(double *));
-            else
+            }
+            else{
                 clusters[closest]=(double**) realloc(clusters[closest],(length[closest]+1)*sizeof(double *));
-            assert(clusters[closest]!=NULL);
+            }
+            if(clusters[closest]==NULL){
+                printf("Error: allocation failed\n");
+                return NULL;
+
+            }
 
             clusters[closest][length[closest]] = (double *) malloc(d * sizeof(double));
-            assert(clusters[closest][length[closest]]!=NULL);
+            if(clusters[closest][length[closest]]==NULL){
+                printf("Error: allocation failed\n");
+                return NULL;
+            }
 
             for(counter_d=0; counter_d<d; counter_d++) {
                 clusters[closest][length[closest]][counter_d]=data[counter_n][counter_d];
@@ -159,7 +192,10 @@ static int* k_means(PyObject *data_python ,PyObject *centroids_python , int k, i
         /* compute new centroid */
         for(counter_k=0; counter_k<k; counter_k++){
             new_centroid=(double *)calloc(d,sizeof(double));
-            assert(new_centroid!=NULL);
+            if(new_centroid==NULL){
+                printf("Error: allocation failed\n");
+                return NULL;
+            }
             for(counter_n=0; counter_n<length[counter_k]; counter_n++){
 
                 for(counter_d=0; counter_d<d; counter_d++){
@@ -200,12 +236,18 @@ static int* k_means(PyObject *data_python ,PyObject *centroids_python , int k, i
 static PyObject* k_means_api(PyObject *self, PyObject *args){
     PyObject *data;
     PyObject *centroids;
+
     int* ret;
     int k, n, d;
 
-    if(!PyArg_ParseTuple(args, "OOiii", &data, &centroids, &k, &n, &d) || self == NULL)
+    if(!PyArg_ParseTuple(args, "OOiii", &data, &centroids, &k, &n, &d) || self == NULL){
+        printf("Error: parse tuple failed\n");
         return NULL;
+    }
     ret=k_means(data, centroids, k, n, d);
+    if(ret==NULL){
+        return NULL;
+    }
     return PySequence_List(convert_int_float(ret,n));
 }
 

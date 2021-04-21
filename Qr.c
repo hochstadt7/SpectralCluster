@@ -3,14 +3,17 @@
 #include "GramShmidt.h"
 #include "ShmidtAux.h"
 #include <math.h>
-
-
 #define EPSILON 0.0001
+
 
 /*identity matrix*/
 double **get_scalar_matrix(int n, int k) {
     int i, j;
     double **res = allocate_matrix(n, n);
+    if(res==NULL){
+        printf("Error: allocation failed\n");
+        return NULL;
+    }
     for (i = 0; i < n; i++) {
         for (j = 0; j < n; j++) {
             res[i][j] = (i == j) ? k : 0;
@@ -51,24 +54,34 @@ double ***qr_iter(double **A, int n) {
     GS_R = allocate_matrix(n, n);
     GS_Q = allocate_matrix(n, n);
     ret = (double ***) malloc(2 * sizeof(double **));
-    if(ret==NULL){
-        err_message("Allocation failed.\n");
+    if(ret==NULL||GS_U==NULL||GS_R==NULL||GS_Q==NULL||Q==NULL||R==NULL){
+        printf("Error: allocation failed\n");
+        return NULL;
     }
     obtain_q_r = (double ***) malloc(2 * sizeof(double **));
     if(obtain_q_r==NULL){
-        err_message("Allocation failed.\n");
+        printf("Error: allocation failed\n");
+        return NULL;
+
     }
 
     /* initiate A_tag */
     A_tag = allocate_matrix(n, n);
-    copy_matrix(A_tag, A, n);
     /* initiate Q_tag */
     Q_tag = get_scalar_matrix(n, 1);
     /* initiate updated_Q_tag */
     updated_Q_tag = get_scalar_matrix(n, 0);
+    if(A_tag==NULL||Q_tag==NULL||updated_Q_tag==NULL){
+        printf("Error: allocation failed\n");
+        return NULL;
+    }
+    copy_matrix(A_tag, A, n);
 
     for (i = 0; i < n; i++) {
-        modified_gram_schmidt(A_tag, n, obtain_q_r,GS_R, GS_Q, GS_U);
+        if(!(modified_gram_schmidt(A_tag, n, obtain_q_r,GS_R, GS_Q, GS_U)))
+        {
+            return NULL;
+        }
         /* move results from array to the Q, R variables */
         copy_matrix(Q, obtain_q_r[0], n);
         copy_matrix(R, obtain_q_r[1], n);

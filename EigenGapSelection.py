@@ -5,8 +5,8 @@ import numpy as np
 def normalize(x):
     norm = np.linalg.norm(x)
     epsilon = 0.0001
-    if abs(norm) < epsilon:
-        print("error division by zero")
+    if abs(norm) <= epsilon:
+        print("Error: division by zero")
         exit(0)
     return x / norm
 
