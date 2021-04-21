@@ -200,7 +200,6 @@ static int* k_means(PyObject *data_python ,PyObject *centroids_python , int k, i
 static PyObject* k_means_api(PyObject *self, PyObject *args){
     PyObject *data;
     PyObject *centroids;
-    PyObject *res;
     int* ret;
     int k, n, d;
 

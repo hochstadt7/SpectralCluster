@@ -47,5 +47,8 @@ def process_pp(observations, k, n, d):
     centroids = k_means_pp_np(observations, k)
     observations = observations.tolist()
     labels = ckmeans.k_means_api(observations, centroids, k, n, d)
+    if labels is None:
+        print("an error has occurred, the program will now shut down")
+        exit(0)
     return labels
 
