@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* python array to c array */
 static PyObject* convert_float_double(double**data, PyObject *data_python) {
     Py_ssize_t n, d, counter_n,counter_d;
     PyObject *sublist;
@@ -27,6 +28,7 @@ static PyObject* convert_float_double(double**data, PyObject *data_python) {
     return data_python;
 }
 
+/* c array to c python */
 static PyObject* convert_double_float(double**data, int n) {
     int i, j;
     PyObject *sublist;

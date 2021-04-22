@@ -3,7 +3,7 @@
 #include "ShmidtAux.h"
 #define EPSILON 0.0001
 
-
+/* modified gram_schmidt algorithm */
 int modified_gram_schmidt(double **A, int n, double ***QR, double **R, double **Q, double **U) {
     int i, j, k;
     double *curr_column, *sec_column;

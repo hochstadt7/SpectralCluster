@@ -8,31 +8,48 @@ def random_color():
     return random.random(), random.random(), random.random()
 
 
-# dimension is either 2 or 3
+# draw clusters
 def visualization_output(data, labels_spectral, labels_k_means, k, real_k, dimension, jaccard_spectral, jaccard_kmeans):
     colors = [[random_color()] for c in range(k)]
+    lst=[]
+    for i in range(k):
+        lst.append([])
+    for i in range(len(data)):
+        lst[labels_spectral[i]].append(data[i])
+
     with PdfPages('clusters.pdf') as pdf:
         fig = plt.figure()
         if dimension == 2:
             ax = fig.add_subplot(2, 2, 1)
             for i in range(k):
-                points = np.array([data[j] for j in range(len(data)) if labels_spectral[j] == i])
+
+                points = np.array(lst[i])
                 ax.scatter(points[:, 0], points[:, 1], s=7, c=colors[i % len(colors)])
             ax.set_title('Normal Spectral Clustering')
             ax = fig.add_subplot(2, 2, 2)
+            lst=[]
             for i in range(k):
-                points = np.array([data[j] for j in range(len(data)) if labels_k_means[j] == i])
+                lst.append([])
+            for i in range(len(data)):
+                lst[labels_k_means[i]].append(data[i])
+            for i in range(k):
+                points = np.array(lst[i])
                 ax.scatter(points[:, 0], points[:, 1], s=7, c=colors[i % len(colors)])
             ax.set_title('K-means')
         else:
             ax = fig.add_subplot(2, 2, 1, projection='3d')
             for i in range(k):
-                points = np.array([data[j] for j in range(len(data)) if labels_spectral[j] == i])
+                points = np.array(lst[i])
                 ax.scatter(points[:, 0], points[:, 1], points[:, 2], s=7, c=colors[i % len(colors)])
             ax.set_title('Normal Spectral Clustering')
             ax = fig.add_subplot(2, 2, 2, projection='3d')
+            lst=[]
             for i in range(k):
-                points = np.array([data[j] for j in range(len(data)) if labels_k_means[j] == i])
+                lst.append([])
+            for i in range(len(data)):
+                lst[labels_k_means[i]].append(data[i])
+            for i in range(k):
+                points = np.array(lst[i])
                 ax.scatter(points[:, 0], points[:, 1], points[:, 2], s=7, c=colors[i % len(colors)])
             ax.set_title('K-means')
 

@@ -87,6 +87,8 @@ double ***qr_iter(double **A, int n) {
         copy_matrix(R, obtain_q_r[1], n);
         /* updated A_tag matrix to be RQ */
         mult_matrices((const double **) R, (const double **) Q, A_tag, n);
+
+
         /* multiply Q_tag with Q, store in updated_Q_tag  */
         mult_matrices((const double **) Q_tag, (const double **) Q, updated_Q_tag, n);
         /* check epsilon difference */

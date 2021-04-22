@@ -5,12 +5,12 @@ import numpy as np
 def normalize(x):
     norm = np.linalg.norm(x)
     epsilon = 0.0001
-    if abs(norm) <= epsilon:
+    if abs(norm) < epsilon:
         print("Error: division by zero")
         exit(0)
     return x / norm
 
-
+# heurisitic for determine k
 def eigen_gap_heuristic(e_vectors, e_values, n, k, random):
     e_values_sort = np.argsort(e_values)
     e_vectors_sorted = np.transpose(e_vectors)[e_values_sort]
