@@ -78,3 +78,15 @@ void mult_matrices(const double **first, const double **second, double **res, in
         }
     }
 }
+
+void print_matrix(const double **mat, int n){
+    int k, j;
+    printf("MATRIX:\n");
+    for(k=0; k<n; k++){
+        for(j=0; j<n; j++){
+            printf("%.2f ", mat[k][j]);
+        }
+        printf("\n");
+    }
+    printf("--\n\n");
+}

@@ -15,5 +15,7 @@ void free_matrix(double **U, int n);
 
 void mult_matrices(const double **first, const double **second, double **res, int n);
 
+void print_matrix(const double **mat, int n);
+
 
 #endif //SPECTURALCLUSTER_SHMIDTAUX_H
