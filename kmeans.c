@@ -1,6 +1,5 @@
 #define PY_SSIZE_T_CLEAN
 #include "Python.h"
-//#include <Python.h>
 #define MAX_ITER 300
 /*
  * Helper function that will not be exposed (meaning, should be static)
@@ -36,6 +35,7 @@ static int my_compare(double **first, double **second, int k, int d){
     return 1;
 }
 
+/* free clusters memory */
 static void free_clusters(double ****clusters, int *length, int k){
     int counter_k, counter_len;
     for(counter_k=0; counter_k<k; counter_k++){
@@ -47,7 +47,7 @@ static void free_clusters(double ****clusters, int *length, int k){
     free(*clusters);
 }
 
-/* conversion from python type to c type */
+/* conversion from python list to c list */
 static PyObject* convert_float_double(double**data, double**centroids, PyObject *data_python, PyObject *centroids_python) {
     Py_ssize_t k, n, d, counter_k, counter_n, counter_d;
     PyObject *sublist;
@@ -85,6 +85,7 @@ static PyObject* convert_float_double(double**data, double**centroids, PyObject 
     return data_python;
 }
 
+/* conversion from c list to python list */
 static PyObject* convert_int_float(int *data, int n) {
     int j;
     PyObject *my_list;
@@ -105,8 +106,7 @@ static PyObject* convert_int_float(int *data, int n) {
     return my_list;
 }
 
-
-
+/* kmeans algorithm */
 static int* k_means(PyObject *data_python ,PyObject *centroids_python , int k, int n, int d){
     int converge,t;
     int counter_k, counter_n, counter_d, closest, *length, *labels;
