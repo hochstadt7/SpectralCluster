@@ -1,5 +1,4 @@
-
-#include <math.h>
+s#include <math.h>
 
 int get_eigen_gap(double** board,int n){
 
