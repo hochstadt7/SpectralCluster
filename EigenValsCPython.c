@@ -1,6 +1,6 @@
 #define PY_SSIZE_T_CLEAN
-#include "C:\Users\Yaniv\AppData\Local\Programs\Python\Python39\include\Python.h"
-//#include <Python.h>
+//#include "C:\Users\Yaniv\AppData\Local\Programs\Python\Python39\include\Python.h"
+#include <Python.h>
 #include "Qr.h"
 #include "SchmidtAux.h"
 #include <stdio.h>
