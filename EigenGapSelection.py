@@ -23,6 +23,9 @@ def eigen_gap_heuristic(e_vectors, e_values, n, k, random):
         k = np.argmax(e_values_diff) + 1
     selected_e_vectors = e_vectors_sorted[0:k]
     eigen_matrix = np.transpose(selected_e_vectors)
-    norm_eigen_matrix = np.apply_along_axis(normalize, 1, eigen_matrix)
+    if k > 1:
+        norm_eigen_matrix = np.apply_along_axis(normalize, 1, eigen_matrix)
+    else:
+        norm_eigen_matrix = eigen_matrix
     # print(k)
     return k, norm_eigen_matrix

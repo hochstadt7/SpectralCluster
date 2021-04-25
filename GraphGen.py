@@ -1,5 +1,6 @@
 import numpy as np
 
+
 # weighted adjacency matrix
 def get_weight_matrix(n, data):
     x = np.array(data)[:, None, :]
@@ -7,10 +8,13 @@ def get_weight_matrix(n, data):
     distances = np.linalg.norm(x-y, axis=-1)
     return np.exp(-(distances/2)) - np.identity(n)
 
+
 # diagonal degree matrix
 def get_diagonal_degree_matrix(n, weights):
+    temp = np.sum(weights, axis=1)
     d = np.identity(n) * np.power(np.sum(weights, axis=1), -1/2)
     return d
+
 
 # laplacian_matrix
 def get_laplacian_matrix(n, diagonal, weights):
