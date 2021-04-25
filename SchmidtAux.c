@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "ShmidtAux.h"
+#include "SchmidtAux.h"
 
 
 double **allocate_matrix(int dimension_1, int dimension_2) {

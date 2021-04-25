@@ -1,5 +1,5 @@
-#ifndef SPECTURALCLUSTER_SHMIDTAUX_H
-#define SPECTURALCLUSTER_SHMIDTAUX_H
+#ifndef SPECTURALCLUSTER_SCHMIDTAUX_H
+#define SPECTURALCLUSTER_SCHMIDTAUX_H
 
 double **allocate_matrix(int dimension_1, int dimension_2);
 
@@ -18,4 +18,4 @@ void mult_matrices(const double **first, const double **second, double **res, in
 void print_matrix(const double **mat, int n);
 
 
-#endif //SPECTURALCLUSTER_SHMIDTAUX_H
+#endif //SPECTURALCLUSTER_SCHMIDTAUX_H

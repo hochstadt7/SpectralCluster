@@ -28,7 +28,7 @@ setup(
             # the files to compile into our module relative to ``setup.py``
             # see how we handle the include - it is important that the geo.h
             # is in the root, otherwise we would have to use: include_dirs=['...']
-            ['EigenValsCPython.c', 'Qr.c','ShmidtAux.c','GramShmidt.c'],
+            ['EigenValsCPython.c', 'Qr.c','SchmidtAux.c','GramShmidt.c'],
             # for example, geo.h is in a folder named myheaders:
             # include_dirs=['myheaders']
         ),
