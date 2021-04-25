@@ -16,8 +16,8 @@ print("Welcome!\n")
 
 # todo: find real values
 MAX_CAPACITY = {
-    2: {"n": 300, "k": 10, "d": "2d"},
-    3: {"n": 100, "k": 5, "d": "3d"}
+    2: {"n": 380, "k": 20, "d": "2d"},
+    3: {"n": 345, "k": 20, "d": "3d"}
 }
 
 for capacity in MAX_CAPACITY.values():
