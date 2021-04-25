@@ -1,13 +1,12 @@
 #define PY_SSIZE_T_CLEAN
-#include "Python.h"
+#include "C:\Users\Yaniv\AppData\Local\Programs\Python\Python39\include\Python.h"
 //#include <Python.h>
 #include "Qr.h"
-#include "ShmidtAux.h"
-#include "EigengapHeuristic.h"
+#include "SchmidtAux.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-/* python array to c array */
+/* convert an input 2d Python of PyFloats from the c-api array into a regular 2d double array */
 static PyObject* convert_float_double(double**data, PyObject *data_python) {
     Py_ssize_t n, d, counter_n,counter_d;
     PyObject *sublist;
@@ -28,7 +27,7 @@ static PyObject* convert_float_double(double**data, PyObject *data_python) {
     return data_python;
 }
 
-/* c array to c python */
+/* convert a regular 2d double array into a c-api output Python array of PyFloats */
 static PyObject* convert_double_float(double**data, int n) {
     int i, j;
     PyObject *sublist;
@@ -59,6 +58,7 @@ static PyObject* convert_double_float(double**data, int n) {
     return my_list;
 }
 
+/* main function of the module - gets a matrix through c-api, returns its orthonormal eigen vectors+values */
 static PyObject* calc_eigen_values_vectors(PyObject *self, PyObject *args){
     PyObject *laplacian, *res;
     double ***ret;

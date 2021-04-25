@@ -1,6 +1,7 @@
 import numpy as np
 
-# jaccard measure
+
+# calculate jaccard measure between two sets of clustering labels
 def calculate_jaccard(truth, clusters):
     # truth = np.array([0, 0, 1, 1, 1, 2, 1])
     # clusters = np.array([0, 0, 0, 1, 1, 2, 1])

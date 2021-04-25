@@ -2,6 +2,7 @@ import math
 import numpy as np
 
 
+# a wrapper function that normalizes a given vector, and throws an error in case the norm is less than 0.0001
 def normalize(x):
     norm = np.linalg.norm(x)
     epsilon = 0.0001
@@ -10,7 +11,8 @@ def normalize(x):
         exit(0)
     return x / norm
 
-# heurisitic for determine k
+
+# heuristic for determine k, based on largest gap between consecutive eigenvalues
 def eigen_gap_heuristic(e_vectors, e_values, n, k, random):
     e_values_sort = np.argsort(e_values)
     e_vectors_sorted = np.transpose(e_vectors)[e_values_sort]

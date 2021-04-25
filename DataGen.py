@@ -2,11 +2,13 @@ from sklearn.datasets import make_blobs
 import numpy as np
 
 
+# generates a random set of blobs
 def generate_data(n, d, k):
     blobs = make_blobs(n_samples=n, n_features=d, centers=k)
     return blobs[0], blobs[1]
 
 
+# generates a ring of points
 def generate_circle_sample_data(params, n):
     r = params["r"]
     sigma = params["s"]
@@ -22,6 +24,7 @@ def generate_circle_sample_data(params, n):
     return x, y, z
 
 
+# generate concentric rings
 def generate_circles(n, rings, d):
     # Radius
     r_list = [2 + 4*i for i in range(rings)]

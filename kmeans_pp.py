@@ -2,12 +2,14 @@ import numpy as np
 import pandas as pd
 import my_kmeans as ckmeans
 
+
+# calculates the squared distance between two points in an n-dimensional space
 def dist(a, b):
     return np.sum(np.power(np.subtract(a, b), 2))
 
 
-
-# kmeans pp
+# kmeans plus plus implementation in numpy
+# we keep track of the closest centroid to each observation, and pick a new centroid using a weighted random function
 def k_means_pp_np(observations, k):
     centroids = []
     new_centroid_index = np.random.choice(len(observations), 1)[0]
@@ -24,6 +26,8 @@ def k_means_pp_np(observations, k):
     return centroids
 
 
+# generates random initial centroids matching data, convert data to a list
+# return the cluster labels calculated by kmeans (implemented in c)
 def process_pp(observations, k, n, d):
     np.random.seed(0)
     centroids = k_means_pp_np(observations, k)

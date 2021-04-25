@@ -1,10 +1,8 @@
 #define PY_SSIZE_T_CLEAN
-#include "Python.h"
+#include "C:\Users\Yaniv\AppData\Local\Programs\Python\Python39\include\Python.h"
 #define MAX_ITER 300
-/*
- * Helper function that will not be exposed (meaning, should be static)
- */
 
+/* allocates a 2d double array */
 static double **allocate_matrix(int dimension_1, int dimension_2){
     int counter;
     double **ret=(double **)malloc(dimension_1 * sizeof(double *));
@@ -175,7 +173,6 @@ static int* k_means(PyObject *data_python ,PyObject *centroids_python , int k, i
                 return NULL;
 
             }
-
             clusters[closest][length[closest]] = (double *) malloc(d * sizeof(double));
             if(clusters[closest][length[closest]]==NULL){
                 printf("Error: allocation failed\n");
@@ -292,7 +289,4 @@ PyInit_my_kmeans(void)
         return NULL;
     }
     return m;
-}//
-// Created by LENOVO on 31/03/2021.
-//
-
+}

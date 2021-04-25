@@ -3,7 +3,6 @@ import GraphGen
 import kmeans_pp
 import argparse
 #import Clocker
-from Qr import *
 from TextualOutput import *
 from JaccardMeasure import *
 from VisualizeResults import *

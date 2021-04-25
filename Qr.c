@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "GramShmidt.h"
-#include "ShmidtAux.h"
+#include "SchmidtAux.h"
 #include <math.h>
 #define EPSILON 0.0001
 
@@ -22,7 +22,7 @@ double **get_scalar_matrix(int n, int k) {
     return res;
 }
 
-/*check difference smaller than EPSILON*/
+/*check whether the difference between two matrices is smaller than EPSILON*/
 int epsilon_diff(double **first, double **second, int n) {
     int i, j;
     double pos_first, pos_sec, res;
@@ -40,7 +40,7 @@ int epsilon_diff(double **first, double **second, int n) {
 }
 
 
-/*QR iteration*/
+/* QR iteration algorithm */
 double ***qr_iter(double **A, int n) {
     /* variable declaration */
     double **A_tag, **Q_tag, **updated_Q_tag, **Q, **R;
@@ -49,32 +49,22 @@ double ***qr_iter(double **A, int n) {
     int i;
     Q = allocate_matrix(n, n);
     R = allocate_matrix(n, n);
-    /* memory for matrices used in the Gram Schimdt algorithm are allocated once, here */
+    /* memory for matrices used in the Gram Schmidt algorithm are allocated once, here */
     GS_U = allocate_matrix(n, n);
     GS_R = allocate_matrix(n, n);
     GS_Q = allocate_matrix(n, n);
     ret = (double ***) malloc(2 * sizeof(double **));
-    if(ret==NULL||GS_U==NULL||GS_R==NULL||GS_Q==NULL||Q==NULL||R==NULL){
-        printf("Error: allocation failed\n");
-        return NULL;
-    }
     obtain_q_r = (double ***) malloc(2 * sizeof(double **));
-    if(obtain_q_r==NULL){
-        printf("Error: allocation failed\n");
-        return NULL;
-
-    }
-
-    /* initiate A_tag */
     A_tag = allocate_matrix(n, n);
     /* initiate Q_tag */
     Q_tag = get_scalar_matrix(n, 1);
     /* initiate updated_Q_tag */
     updated_Q_tag = get_scalar_matrix(n, 0);
-    if(A_tag==NULL||Q_tag==NULL||updated_Q_tag==NULL){
+    if(ret==NULL||GS_U==NULL||GS_R==NULL||GS_Q==NULL||Q==NULL||R==NULL||obtain_q_r==NULL||A_tag==NULL||Q_tag==NULL||updated_Q_tag==NULL){
         printf("Error: allocation failed\n");
         return NULL;
     }
+    /* initiate A_tag */
     copy_matrix(A_tag, A, n);
 
     for (i = 0; i < n; i++) {
@@ -87,11 +77,9 @@ double ***qr_iter(double **A, int n) {
         copy_matrix(R, obtain_q_r[1], n);
         /* updated A_tag matrix to be RQ */
         mult_matrices((const double **) R, (const double **) Q, A_tag, n);
-
-
         /* multiply Q_tag with Q, store in updated_Q_tag  */
         mult_matrices((const double **) Q_tag, (const double **) Q, updated_Q_tag, n);
-        /* check epsilon difference */
+        /* if the new Q_tag matrix is very similar to the previous Q_tag, return the QR decomposition */
         if (!epsilon_diff(Q_tag, updated_Q_tag, n)) {
             ret[0] = A_tag;
             ret[1] = Q_tag;
