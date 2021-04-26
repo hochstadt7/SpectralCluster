@@ -11,7 +11,6 @@ def get_weight_matrix(n, data):
 
 # diagonal degree matrix
 def get_diagonal_degree_matrix(n, weights):
-    temp = np.sum(weights, axis=1)
     d = np.identity(n) * np.power(np.sum(weights, axis=1), -1/2)
     return d
 

@@ -6,12 +6,11 @@
 #define EPSILON 0.0001
 
 
-/*identity matrix*/
+/* diagonal matrix with k on the diagonal */
 double **get_scalar_matrix(int n, int k) {
     int i, j;
     double **res = allocate_matrix(n, n);
     if(res==NULL){
-        printf("Error: allocation failed\n");
         return NULL;
     }
     for (i = 0; i < n; i++) {
@@ -22,7 +21,7 @@ double **get_scalar_matrix(int n, int k) {
     return res;
 }
 
-/*check whether the difference between two matrices is smaller than EPSILON*/
+/* check whether the difference between two matrices is smaller than EPSILON */
 int epsilon_diff(double **first, double **second, int n) {
     int i, j;
     double pos_first, pos_sec, res;

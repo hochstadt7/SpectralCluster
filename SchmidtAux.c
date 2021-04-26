@@ -3,7 +3,7 @@
 #include <math.h>
 #include "SchmidtAux.h"
 
-
+/* allocate memory for the matrix */
 double **allocate_matrix(int dimension_1, int dimension_2) {
     int counter;
     double **ret = (double **) malloc(dimension_1 * sizeof(double *));
@@ -21,7 +21,7 @@ double **allocate_matrix(int dimension_1, int dimension_2) {
     return ret;
 }
 
-/*set ret_col to be the i'th column of matrix U*/
+/* set ret_col to be the i'th column of matrix U */
 void set_col(double **U, double *ret_col, int i, int n) {
     int row;
     for (row = 0; row < n; row++) {
@@ -29,18 +29,18 @@ void set_col(double **U, double *ret_col, int i, int n) {
     }
 }
 
-/*calculate norm*/
+/* calculate norm */
 double get_norm(const double *col, int n) {
     double ret_sum = 0;
     int i;
     for (i = 0; i < n; i++) {
         ret_sum += (col[i] * col[i]);
     }
-    /*TODO find a way to remove sqrt*/
+
     return sqrt(ret_sum);
 }
 
-/*multiply vectors*/
+/* multiply vectors */
 double mult_vectors(const double *first, const double *second, int n) {
     double ret_sum = 0;
     int i;
@@ -50,6 +50,7 @@ double mult_vectors(const double *first, const double *second, int n) {
     return ret_sum;
 }
 
+/* copy data cell by cell from paste to copy */
 void copy_matrix(double **copy, double **paste, int n) {
     int i, j;
     for (i = 0; i < n; i++) {
@@ -59,6 +60,7 @@ void copy_matrix(double **copy, double **paste, int n) {
     }
 }
 
+/* free memory allocated for the matrix */
 void free_matrix(double **U, int n) {
     int i;
     for (i = 0; i < n; i++) {
@@ -67,6 +69,7 @@ void free_matrix(double **U, int n) {
     free(U);
 }
 
+/* multiplication of first, second results in res */
 void mult_matrices(const double **first, const double **second, double **res, int n) {
     int i, j, k;
     for (i = 0; i < n; i++) {

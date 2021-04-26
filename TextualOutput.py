@@ -3,7 +3,7 @@ def data_txt(data, labels):
     f = open("data.txt", "w")
     n, d = data.shape
     for i in range(n):
-        f.write(",".join(["{:.2f}".format(data[i][j]) for j in range(d)]) + "," + str(labels[i]) + "\n")
+        f.write(",".join([str(data[i][j]) for j in range(d)]) + "," + str(labels[i]) + "\n")
     f.close()
 
 

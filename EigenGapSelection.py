@@ -27,5 +27,4 @@ def eigen_gap_heuristic(e_vectors, e_values, n, k, random):
         norm_eigen_matrix = np.apply_along_axis(normalize, 1, eigen_matrix)
     else:
         norm_eigen_matrix = eigen_matrix
-    # print(k)
     return k, norm_eigen_matrix

@@ -2,7 +2,6 @@ import DataGen
 import GraphGen
 import kmeans_pp
 import argparse
-#import Clocker
 from TextualOutput import *
 from JaccardMeasure import *
 from VisualizeResults import *
@@ -10,11 +9,8 @@ from EigenGapSelection import *
 import numpy as np
 import section_four as qr_c
 
-#DEBUG = True
-
 print("Welcome!\n")
 
-# todo: find real values
 MAX_CAPACITY = {
     2: {"n": 380, "k": 20, "d": "2d"},
     3: {"n": 345, "k": 20, "d": "3d"}
@@ -24,7 +20,7 @@ for capacity in MAX_CAPACITY.values():
     print("In " + str(capacity["d"]) + " mode, the program can handle up to n="+str(capacity["n"])+" points," +
           " and up to k=" + str(capacity["k"]) + " clusters\n")
 
-d = 2
+d = np.random.choice(2, 1)[0] + 2
 print(str(d)+"d Mode\n")
 
 parser = argparse.ArgumentParser()
@@ -50,7 +46,7 @@ else:
     if(real_k==0 or n==0):
         print("K and N should be positive\n")
         exit(0)
-    if real_k > n:
+    if real_k >= n:
         print("K must be less than N\n")
         exit(0)
     k = None
